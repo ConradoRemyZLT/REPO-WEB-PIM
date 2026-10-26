@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="es" class="lang-es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>PIM · Parque Industrial Minero — San Juan, Argentina</title>
+<meta name="description" content="PIM, Parque Industrial Minero sobre la RN20 junto al Aeropuerto de San Juan: lotes y naves para la cadena de proveedores de la minería, con Mercado Libre como operador ancla. Desarrolla ZLT.">
+<meta name="robots" content="{{robots}}">
+<meta name="theme-color" content="#0C0D12">
+<meta property="og:title" content="PIM · Parque Industrial Minero">
+<meta property="og:description" content="Parque industrial y logístico para la cadena de valor minera, sobre la RN20 en San Juan.">
+<link rel="icon" type="image/png" href="{{asset:logos/pim-isotipo-estela.png}}">
+<style>
+{{asset-css:vendor/leaflet.css}}
+{{include:src/styles.css}}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#proyecto"><span class="l-es">Saltar al contenido</span><span class="l-en">Skip to content</span></a>
+
+<!-- ============================ BARRA ============================ -->
+<header class="bar" id="bar">
+  <div class="bar-in">
+    <a class="bar-logo" href="#inicio" aria-label="PIM · Parque Industrial Minero">
+      <img class="logo-w" src="{{asset:logos/pim-logo-blanco.png}}" alt="PIM · Parque Industrial Minero" width="140" height="50">
+      <img class="logo-c" src="{{asset:logos/pim-logo-color.png}}" alt="" aria-hidden="true" width="140" height="50">
+    </a>
+    <nav class="bar-nav" id="nav" aria-label="Secciones">
+      <a href="#proyecto"><span class="l-es">Proyecto</span><span class="l-en">Project</span></a>
+      <a href="#ubicacion"><span class="l-es">Ubicación</span><span class="l-en">Location</span></a>
+      <a href="#masterplan"><span class="l-es">Masterplan</span><span class="l-en">Masterplan</span></a>
+      <a href="#mercadolibre">Mercado Libre</a>
+      <a href="#unidades"><span class="l-es">Unidades</span><span class="l-en">Units</span></a>
+      <a href="#obra"><span class="l-es">Obra</span><span class="l-en">Construction</span></a>
+      <a href="#galeria"><span class="l-es">Galería</span><span class="l-en">Gallery</span></a>
+      <a class="nav-cta-m" href="#contacto"><span class="l-es">Contacto</span><span class="l-en">Contact</span></a>
+    </nav>
+    <div class="bar-act">
+      <div class="lang" role="group" aria-label="Idioma / Language">
+        <button type="button" data-lang="es" aria-pressed="true">ES</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <a class="btn btn-sm btn-solid bar-cta" href="#contacto"><span class="l-es">Contacto</span><span class="l-en">Contact</span></a>
+      <button class="burger" id="burger" type="button" aria-label="Menú" aria-expanded="false" aria-controls="nav"><i></i><i></i></button>
+    </div>
+  </div>
+</header>
+
+<main>
+<!-- ============================ HERO ============================ -->
+<section class="hero" id="inicio">
+  <video class="hero-v" autoplay muted loop playsinline preload="auto" poster="{{asset:videos/01-vuelo-aereo-parque-poster.webp}}" src="{{asset:videos/01-vuelo-aereo-parque.mp4}}" aria-hidden="true"></video>
+  <div class="hero-shade" aria-hidden="true"></div>
+  <svg class="estela estela-hero" viewBox="0 0 600 340" aria-hidden="true"><polygon points="0,340 560,40 600,40 230,340" fill="#4F4C4A" opacity=".9"/><polygon points="250,340 600,30 600,120 360,340" fill="#F28A2D"/></svg>
+  <div class="wrap hero-in">
+    <p class="eyebrow eyebrow-d rv"><span class="l-es">San Juan · Argentina · RN20</span><span class="l-en">San Juan · Argentina · National Route 20</span></p>
+    <h1 class="hero-t rv">
+      <span class="l-es">La plataforma industrial y logística de la <em>minería</em> sanjuanina</span>
+      <span class="l-en">The industrial and logistics platform for San Juan’s <em>mining</em> industry</span>
+    </h1>
+    <p class="hero-s rv">
+      <span class="l-es">Un parque concebido para consolidar a los proveedores del sector en un mismo predio: junto al Aeropuerto de San Juan, con acceso directo a la Ruta Nacional N°20 y a unas 2 horas de Calingasta y Rodeo.</span>
+      <span class="l-en">A park designed to bring the sector’s suppliers together on a single site: next to San Juan Airport, with direct access to National Route 20 and about 2 hours from Calingasta and Rodeo.</span>
+    </p>
+    <div class="hero-cta rv">
+      <a class="btn btn-solid" href="#contacto"><span class="l-es">Quiero información</span><span class="l-en">Request information</span></a>
+      <a class="btn btn-ghost-d" href="{{brochure_url}}" target="_blank" rel="noopener" download>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 19h16"/></svg>
+        <span class="l-es">Descargar brochure</span><span class="l-en">Download brochure</span>
+      </a>
+    </div>
+  </div>
+  <div class="hero-facts">
+    <div class="wrap facts">
+      <div class="fact"><b>RN20</b><span class="l-es">Acceso directo</span><span class="l-en">Direct access</span></div>
+      <div class="fact"><b>~2 h</b><span class="l-es">a Calingasta y Rodeo</span><span class="l-en">to Calingasta and Rodeo</span></div>
+      <div class="fact"><b>4.370 m²</b><span class="l-es">Nave ancla Mercado Libre</span><span class="l-en">Mercado Libre anchor warehouse</span></div>
+      <div class="fact"><b>2</b><span class="l-es">Etapas de desarrollo</span><span class="l-en">Development phases</span></div>
+    </div>
+  </div>
+  <a class="scroll-cue" href="#proyecto" aria-label="Bajar"><i></i></a>
+</section>
+
+<!-- ============================ PROYECTO (ficha) ============================ -->
+<section class="sec sec-light" id="proyecto">
+  <svg class="estela estela-sec" viewBox="0 0 600 340" aria-hidden="true"><polygon points="0,340 560,40 600,40 230,340" fill="#4F4C4A" opacity=".18"/><polygon points="250,340 600,30 600,120 360,340" fill="#F28A2D" opacity=".28"/></svg>
+  <div class="wrap">
+    <div class="phead-top">
+      <p class="eyebrow"><span class="l-es">Minería · Logística · Industria</span><span class="l-en">Mining · Logistics · Industry</span></p>
+      <div class="ptag-box" id="estadoGeneral"></div>
+      <h2 class="sr-only">PIM · Parque Industrial Minero</h2>
+      <div class="plogo-box"><img src="{{asset:logos/pim-logo-color.png}}" alt="PIM · Parque Industrial Minero" width="320" height="114"></div>
+      <p class="place">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg>
+        <span class="l-es">Ruta Nacional N°20, junto al Aeropuerto de San Juan · San Juan, Argentina</span>
+        <span class="l-en">National Route 20, next to San Juan Airport · San Juan, Argentina</span>
+      </p>
+    </div>
+
+    <div class="pgrid">
+      <div class="pcopy">
+        <h3 class="h-sec rv"><span class="l-es">Propuesta de valor</span><span class="l-en">Value proposition</span></h3>
+        <p class="lead rv">
+          <span class="l-es">La minería de gran escala se apoya en una extensa cadena de valor que excede la extracción —logística, almacenamiento, mantenimiento, insumos y servicios técnicos— que hoy opera de manera dispersa e informal, con impacto directo en costos y tiempos.</span>
+          <span class="l-en">Large-scale mining relies on an extensive value chain that goes beyond extraction —logistics, storage, maintenance, supplies and technical services— which today operates in a scattered, informal way, with a direct impact on costs and lead times.</span>
+        </p>
+        <p class="rv">
+          <span class="l-es">Un parque industrial y logístico concebido para el sector responde a esa demanda estructural: consolida a los proveedores en un mismo predio, con infraestructura y servicios acordes al estándar de la industria, habilitando una cadena de abastecimiento más eficiente, previsible y próxima a la operación.</span>
+          <span class="l-en">An industrial and logistics park designed for the sector answers that structural demand: it brings suppliers together on one site, with infrastructure and services that meet industry standards, enabling a more efficient, predictable supply chain closer to the operation.</span>
+        </p>
+        <ul class="chips rv">
+          <li><span class="l-es">Logística</span><span class="l-en">Logistics</span></li>
+          <li><span class="l-es">Almacenamiento</span><span class="l-en">Storage</span></li>
+          <li><span class="l-es">Mantenimiento</span><span class="l-en">Maintenance</span></li>
+          <li><span class="l-es">Insumos</span><span class="l-en">Supplies</span></li>
+          <li><span class="l-es">Servicios técnicos</span><span class="l-en">Technical services</span></li>
+          <li><span class="l-es">Tránsito pesado</span><span class="l-en">Heavy traffic</span></li>
+        </ul>
+        <div class="btns rv">
+          <a class="btn btn-ghost" href="{{brochure_url}}" target="_blank" rel="noopener" download>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 19h16"/></svg>
+            <span class="l-es">Brochure del proyecto</span><span class="l-en">Project brochure</span>
+          </a>
+          <button class="btn btn-ghost" type="button" data-open-video="0">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            <span class="l-es">Ver recorrido</span><span class="l-en">Watch flyover</span>
+          </button>
+          <a class="btn btn-ghost" href="#obra">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 21h18M5 21V10l7-5 7 5v11M9 21v-6h6v6"/></svg>
+            <span class="l-es">Estado de obra</span><span class="l-en">Construction status</span>
+          </a>
+        </div>
+      </div>
+      <figure class="pfig rv">
+        <img src="{{asset:fotos/04-nave-logistica-andenes.webp}}" alt="Render de nave logística con andenes de carga en PIM" width="1600" height="900">
+        <figcaption><span class="l-es">Imagen ilustrativa</span><span class="l-en">Illustrative image</span></figcaption>
+      </figure>
+    </div>
+
+    <div class="credits rv">
+      <div class="cred">
+        <span class="cred-l"><span class="l-es">Desarrolla</span><span class="l-en">Developer</span></span>
+        <img class="cred-zlt" src="{{asset:logos/zlt-logo-323232.png}}" alt="ZLT" width="90" height="41">
+      </div>
+      <div class="cred">
+        <span class="cred-l"><span class="l-es">Operador ancla</span><span class="l-en">Anchor operator</span></span>
+        <img class="cred-ml" src="{{asset:logos/mercado-libre-logo.png}}" alt="Mercado Libre" width="140" height="40">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ UBICACIÓN ============================ -->
+<section class="sec sec-dark" id="ubicacion">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow eyebrow-d"><span class="l-es">Localización estratégica</span><span class="l-en">Strategic location</span></p>
+      <h2 class="h-sec h-sec-d rv"><span class="l-es">Entre la capital y la cordillera</span><span class="l-en">Between the capital and the Andes</span></h2>
+      <p class="lead lead-d rv">
+        <span class="l-es">En logística minera, la ubicación es un factor determinante de competitividad. PIM integra proximidad a la zona de operación minera —aproximadamente a 2 horas de Calingasta y Rodeo—, acceso directo a la Ruta Nacional N°20 y cercanía al Aeropuerto de San Juan, optimizando distancias, costos y tiempos de respuesta. No es suelo urbanizado: es un activo logístico operativo.</span>
+        <span class="l-en">In mining logistics, location is a decisive competitive factor. PIM combines proximity to the mining operations area —about 2 hours from Calingasta and Rodeo—, direct access to National Route 20 and closeness to San Juan Airport, optimizing distances, costs and response times. Not just serviced land: an operating logistics asset.</span>
+      </p>
+    </div>
+
+    <div class="loc">
+      <div class="map-box rv">
+        <div class="map-tabs" role="tablist">
+          <button type="button" role="tab" class="on" data-view="region" aria-selected="true"><span class="l-es">Vista regional</span><span class="l-en">Regional view</span></button>
+          <button type="button" role="tab" data-view="entorno" aria-selected="false"><span class="l-es">Entorno del parque</span><span class="l-en">Park surroundings</span></button>
+        </div>
+        <div id="map" class="map" aria-label="Mapa de ubicación de PIM"></div>
+        <div class="map-legend">
+          <span><i class="lg lg-pim"></i>PIM</span>
+          <span><i class="lg lg-base"></i><span class="l-es">Base de servicios</span><span class="l-en">Service base</span></span>
+          <span><i class="lg lg-mina"></i><span class="l-es">Proyecto minero</span><span class="l-en">Mining project</span></span>
+          <span><i class="lg lg-link"></i><span class="l-es">Vínculo logístico*</span><span class="l-en">Logistics link*</span></span>
+        </div>
+      </div>
+
+      <aside class="loc-side">
+        <div class="corr rv">
+          <p class="corr-k"><span class="l-es">Corredor norte</span><span class="l-en">Northern corridor</span></p>
+          <p class="corr-t">Jáchal · Iglesia · Rodeo</p>
+          <p class="corr-d"><span class="l-es">Conexión con Vicuña y Veladero.</span><span class="l-en">Connection to Vicuña and Veladero.</span></p>
+        </div>
+        <div class="corr rv">
+          <p class="corr-k"><span class="l-es">Corredor sur / oeste</span><span class="l-en">Southern / western corridor</span></p>
+          <p class="corr-t">Calingasta · Barreal · Cañada Honda</p>
+          <p class="corr-d"><span class="l-es">Apoyo a Los Azules y El Pachón.</span><span class="l-en">Support for Los Azules and El Pachón.</span></p>
+        </div>
+        <div class="dist rv">
+          <p class="corr-k"><span class="l-es">Distancias referenciales</span><span class="l-en">Reference distances</span></p>
+          <dl>
+            <div><dt><span class="l-es">Ciudad – bases cordilleranas</span><span class="l-en">City – Andean bases</span></dt><dd>≈ 200 km</dd></div>
+            <div><dt><span class="l-es">Bases – proyectos mineros</span><span class="l-en">Bases – mining projects</span></dt><dd>≈ 200 km</dd></div>
+            <div><dt>San Juan – Cañada Honda</dt><dd>≈ 61 km</dd></div>
+            <div><dt>PIM – Calingasta / Rodeo</dt><dd>~2 h</dd></div>
+          </dl>
+        </div>
+        <a class="btn btn-ghost-d rv" id="verUbicacion" href="#" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg>
+          <span class="l-es">Ver ubicación</span><span class="l-en">View location</span>
+        </a>
+      </aside>
+    </div>
+    <p class="fine fine-d">
+      <span class="l-es">*Distancias referenciales por tramo: ciudad–bases y bases–proyectos; varían según destino y recorrido. Los vínculos punteados indican relaciones logísticas, no caminos mineros. Ubicaciones aproximadas.</span>
+      <span class="l-en">*Reference distances per leg: city–bases and bases–projects; they vary by destination and route. Dotted links show logistics relationships, not mining roads. Approximate locations.</span>
+    </p>
+  </div>
+</section>
+
+<!-- ============================ MASTERPLAN ============================ -->
+<section class="sec sec-light" id="masterplan">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow"><span class="l-es">Masterplan</span><span class="l-en">Masterplan</span></p>
+      <h2 class="h-sec rv"><span class="l-es">Un predio, dos etapas</span><span class="l-en">One site, two phases</span></h2>
+      <p class="lead rv">
+        <span class="l-es">El parque se desarrolla en dos etapas sobre la RN20, lindero al Aeropuerto de San Juan, con la expansión de Mercado Libre sobre el frente de ruta y áreas de servicios en ambos accesos.</span>
+        <span class="l-en">The park is developed in two phases on RN20, bordering San Juan Airport, with the Mercado Libre expansion on the road frontage and service areas at both access points.</span>
+      </p>
+    </div>
+    <div class="mp">
+      <div class="mp-fig rv">
+        <svg class="mp-svg" viewBox="0 60 1440 700" role="img" aria-labelledby="mpT">
+          <title id="mpT">Masterplan de PIM: Etapa 1, Etapa 2, áreas de servicios y expansión Mercado Libre</title>
+          <defs>
+            <clipPath id="mpclip"><rect x="0" y="0" width="1440" height="810"/></clipPath>
+            <pattern id="hatch" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="10" stroke="#fff" stroke-width="2" opacity=".55"/></pattern>
+          </defs>
+          <g clip-path="url(#mpclip)">
+            <image href="{{asset:mapas/masterplan-aereo.webp}}" x="-122" y="0" width="1683" height="810" preserveAspectRatio="none"/>
+            <rect x="0" y="0" width="1440" height="810" fill="#0C0D12" opacity=".18"/>
+            <!-- aeropuerto -->
+            <line x1="271" y1="105" x2="1155" y2="346" stroke="#F28A2D" stroke-width="40" opacity=".9"/>
+            <text class="mp-air" x="713" y="232" transform="rotate(15.25 713 225)" text-anchor="middle"><tspan class="l-es">Aeropuerto San Juan</tspan><tspan class="l-en">San Juan Airport</tspan></text>
+            <!-- RN20 -->
+            <polyline points="0,822 387,652 1043,545 1440,438" fill="none" stroke="#F28A2D" stroke-width="5" stroke-dasharray="22 12"/>
+            <text class="mp-rn" x="300" y="680" transform="rotate(-23 300 680)">RN20</text>
+            <text class="mp-rn" x="1180" y="495" transform="rotate(-15 1180 495)">RN20</text>
+            <!-- zonas -->
+            <polygon class="zn zn-e2" data-z="e2" points="226,359 341,322 552,387 442,431 586,596 511,609 320,391 269,409"/>
+            <polygon class="zn zn-e1" data-z="e1" points="442,431 552,387 662,421 730,484 689,501 759,570 667,584 586,596"/>
+            <polygon class="zn zn-ml" data-z="ml" points="689,501 730,484 818,562 759,570"/>
+            <polygon class="zn zn-sv" data-z="sv" points="321,326 531,390 529,397 319,333"/>
+            <polygon class="zn zn-sv" data-z="sv" points="572,576 745,551 754,569 583,594"/>
+            <polyline points="226,359 341,322 552,387 662,421 818,562 667,584 511,609 320,391 269,409 226,359" fill="none" stroke="#F4F1EA" stroke-width="5" stroke-linejoin="round"/>
+            <text class="mp-lab" x="335" y="378"><tspan class="l-es">ETAPA 2</tspan><tspan class="l-en">PHASE 2</tspan></text>
+            <text class="mp-lab" x="575" y="478"><tspan class="l-es">ETAPA 1</tspan><tspan class="l-en">PHASE 1</tspan></text>
+          </g>
+        </svg>
+        <p class="mp-note"><span class="l-es">Pasá el cursor o tocá cada zona.</span><span class="l-en">Hover or tap each area.</span></p>
+      </div>
+      <ul class="mp-list" id="mpList">
+        <li data-z="e1" tabindex="0"><i class="sw sw-e1"></i><div><b><span class="l-es">Etapa 1</span><span class="l-en">Phase 1</span></b><span class="l-es">Primer desarrollo, con frente a la RN20.</span><span class="l-en">First development, fronting RN20.</span></div></li>
+        <li data-z="e2" tabindex="0"><i class="sw sw-e2"></i><div><b><span class="l-es">Etapa 2</span><span class="l-en">Phase 2</span></b><span class="l-es">Ampliación hacia el aeropuerto.</span><span class="l-en">Expansion toward the airport.</span></div></li>
+        <li data-z="ml" tabindex="0"><i class="sw sw-ml"></i><div><b><span class="l-es">Expansión Mercado Libre</span><span class="l-en">Mercado Libre expansion</span></b><span class="l-es">Nave logística de 4.370 m².</span><span class="l-en">4,370 m² logistics warehouse.</span></div></li>
+        <li data-z="sv" tabindex="0"><i class="sw sw-sv"></i><div><b><span class="l-es">Áreas de servicios*</span><span class="l-en">Service areas*</span></b><span class="l-es">En ambos frentes del predio.</span><span class="l-en">On both frontages of the site.</span></div></li>
+      </ul>
+    </div>
+    <p class="fine"><span class="l-es">*Área de servicios: proyecto a definir, sujeto a aprobaciones municipales y provinciales. Delimitaciones ilustrativas.</span><span class="l-en">*Service area: project to be defined, subject to municipal and provincial approvals. Illustrative boundaries.</span></p>
+  </div>
+</section>
+
+<!-- ============================ MERCADO LIBRE ============================ -->
+<section class="sec sec-cream" id="mercadolibre">
+  <svg class="estela estela-sec" viewBox="0 0 600 340" aria-hidden="true"><polygon points="0,340 560,40 600,40 230,340" fill="#4F4C4A" opacity=".16"/><polygon points="250,340 600,30 600,120 360,340" fill="#F28A2D" opacity=".26"/></svg>
+  <div class="wrap">
+    <div class="ml">
+      <div class="ml-copy">
+        <p class="eyebrow"><span class="l-es">Partners · Nave ancla</span><span class="l-en">Partners · Anchor warehouse</span></p>
+        <div class="ml-logo rv"><img src="{{asset:logos/mercado-libre-logo.png}}" alt="Mercado Libre" width="505" height="144"></div>
+        <h2 class="sr-only">Mercado Libre</h2>
+        <div class="kpis rv">
+          <div class="kpi"><b>4.370<small>m²</small></b><span class="l-es">Nave logística</span><span class="l-en">Logistics warehouse</span></div>
+          <div class="kpi"><b>RN20</b><span class="l-es">Frente de ruta</span><span class="l-en">Road frontage</span></div>
+        </div>
+        <p class="lead rv">
+          <span class="l-es">La incorporación de una nave logística de 4.370 m² de Mercado Libre actúa como operador ancla y respaldo de mercado: acredita la calidad del desarrollo, densifica el flujo logístico, atrae nuevas radicaciones y confirma la vocación del parque como plataforma multipropósito, integrando la cadena de abastecimiento minera con la infraestructura de distribución que la región demanda.</span>
+          <span class="l-en">The addition of a 4,370 m² Mercado Libre logistics warehouse acts as anchor operator and market endorsement: it validates the quality of the development, increases logistics flow, attracts new companies and confirms the park’s role as a multipurpose platform, integrating the mining supply chain with the distribution infrastructure the region needs.</span>
+        </p>
+        <ul class="chips rv">
+          <li><span class="l-es">Operador ancla</span><span class="l-en">Anchor operator</span></li>
+          <li><span class="l-es">Respaldo de mercado</span><span class="l-en">Market endorsement</span></li>
+          <li><span class="l-es">Plataforma multipropósito</span><span class="l-en">Multipurpose platform</span></li>
+        </ul>
+      </div>
+      <div class="ml-figs">
+        <figure class="ml-fig rv">
+          <img src="{{asset:fotos/06-nave-mercado-libre-aerea.webp}}" alt="Render aéreo de la nave de Mercado Libre sobre la RN20" width="1800" height="960">
+          <figcaption><span class="l-es">Nave Mercado Libre · imagen ilustrativa</span><span class="l-en">Mercado Libre warehouse · illustrative image</span></figcaption>
+        </figure>
+        <figure class="ml-fig ml-fig-s rv">
+          <img src="{{asset:mapas/satelital-lotes.webp}}" alt="Vista satelital del predio con la ubicación de la nave de Mercado Libre" width="1375" height="730">
+          <figcaption><span class="l-es">Implantación sobre RN20</span><span class="l-en">Site layout on RN20</span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ UNIDADES ============================ -->
+<section class="sec sec-light" id="unidades">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow"><span class="l-es">Unidades y tipologías</span><span class="l-en">Units and typologies</span></p>
+      <h2 class="h-sec rv"><span class="l-es">Espacio a la medida de la operación</span><span class="l-en">Space sized to the operation</span></h2>
+    </div>
+    <div class="u-filter" id="uFilter" hidden></div>
+    <div class="u-grid" id="uGrid"></div>
+  </div>
+</section>
+
+<!-- ============================ OBRA ============================ -->
+<section class="sec sec-dark sec-obra" id="obra">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow eyebrow-d"><span class="l-es">Estado de obra</span><span class="l-en">Construction status</span></p>
+      <h2 class="h-sec h-sec-d rv"><span class="l-es">Avance del proyecto</span><span class="l-en">Project progress</span></h2>
+      <p class="obra-upd" id="obraUpd"></p>
+    </div>
+    <div class="o-grid" id="oGrid"></div>
+  </div>
+</section>
+
+<!-- ============================ INFRAESTRUCTURA ============================ -->
+<section class="sec sec-light" id="infraestructura">
+  <div class="wrap">
+    <div class="sec-head sec-head-c">
+      <p class="eyebrow"><span class="l-es">Servicios e infraestructura</span><span class="l-en">Services and infrastructure</span></p>
+      <h2 class="h-sec rv"><span class="l-es">Estándar de la industria</span><span class="l-en">Industry-standard</span></h2>
+    </div>
+    <ul class="ic-grid">
+      <li class="rv">{{include:iconos/red-de-agua.svg}}<span class="l-es">Red de agua</span><span class="l-en">Water network</span></li>
+      <li class="rv">{{include:iconos/fibra-optica.svg}}<span class="l-es">Fibra óptica</span><span class="l-en">Fiber optics</span></li>
+      <li class="rv">{{include:iconos/calles-pavimentadas.svg}}<span class="l-es">Calles pavimentadas con hormigón</span><span class="l-en">Concrete-paved streets</span></li>
+      <li class="rv">{{include:iconos/alumbrado-publico.svg}}<span class="l-es">Alumbrado público</span><span class="l-en">Street lighting</span></li>
+      <li class="rv">{{include:iconos/red-electrica.svg}}<span class="l-es">Red eléctrica</span><span class="l-en">Power grid</span></li>
+      <li class="rv">{{include:iconos/red-de-cloacas.svg}}<span class="l-es">Red de cloacas</span><span class="l-en">Sewer network</span></li>
+      <li class="rv">{{include:iconos/seguridad-24hs.svg}}<span class="l-es">Seguridad privada 24 hs</span><span class="l-en">24/7 private security</span></li>
+      <li class="rv">{{include:iconos/cordon-cuneta.svg}}<span class="l-es">Cordón cuneta</span><span class="l-en">Curbs and gutters</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================ DESARROLLO REGIONAL ============================ -->
+<section class="regional" id="regional">
+  <img class="regional-bg" src="{{asset:fotos/01-calle-interna-naves.webp}}" alt="" aria-hidden="true">
+  <div class="regional-shade" aria-hidden="true"></div>
+  <div class="wrap regional-in">
+    <div class="glass rv">
+      <p class="eyebrow eyebrow-d"><span class="l-es">Desarrollo regional</span><span class="l-en">Regional development</span></p>
+      <p class="regional-t">
+        <span class="l-es">Al radicar y tributar localmente a la cadena de proveedores, el valor generado por la minería se retiene en la región: empleo calificado, fortalecimiento de pymes, ampliación de la base tributaria y un ecosistema productivo que trasciende el ciclo de vida de cada yacimiento.</span>
+        <span class="l-en">By bringing the supplier chain to settle and pay taxes locally, the value generated by mining stays in the region: skilled jobs, stronger SMEs, a broader tax base and a productive ecosystem that outlasts the life cycle of each mine.</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ GALERÍA ============================ -->
+<section class="sec sec-light" id="galeria">
+  <div class="wrap">
+    <div class="sec-head sec-head-row">
+      <div>
+        <p class="eyebrow"><span class="l-es">Galería</span><span class="l-en">Gallery</span></p>
+        <h2 class="h-sec rv"><span class="l-es">El parque, por dentro</span><span class="l-en">Inside the park</span></h2>
+      </div>
+      <div class="g-tabs" role="tablist">
+        <button type="button" role="tab" class="on" data-g="fotos" aria-selected="true"><span class="l-es">Renders</span><span class="l-en">Renders</span></button>
+        <button type="button" role="tab" data-g="videos" aria-selected="false"><span class="l-es">Videos</span><span class="l-en">Videos</span></button>
+      </div>
+    </div>
+
+    <div class="gal" data-gal="fotos">
+      <div class="gtrack">
+        <figure class="gslide"><img src="{{asset:fotos/05-portal-de-acceso.webp}}" alt="Portal de acceso a PIM"><figcaption><span class="l-es">Portal de acceso</span><span class="l-en">Entrance gate</span></figcaption></figure>
+        <figure class="gslide"><img src="{{asset:fotos/03-vista-aerea-parque.webp}}" alt="Vista aérea del parque"><figcaption><span class="l-es">Vista aérea del parque</span><span class="l-en">Aerial view of the park</span></figcaption></figure>
+        <figure class="gslide"><img src="{{asset:fotos/04-nave-logistica-andenes.webp}}" alt="Nave logística con andenes"><figcaption><span class="l-es">Nave logística con andenes</span><span class="l-en">Logistics warehouse with docks</span></figcaption></figure>
+        <figure class="gslide"><img src="{{asset:fotos/01-calle-interna-naves.webp}}" alt="Calle interna y naves"><figcaption><span class="l-es">Calle interna y naves</span><span class="l-en">Internal street and warehouses</span></figcaption></figure>
+        <figure class="gslide"><img src="{{asset:fotos/02-acceso-avenida-principal.webp}}" alt="Avenida principal"><figcaption><span class="l-es">Avenida principal</span><span class="l-en">Main avenue</span></figcaption></figure>
+        <figure class="gslide"><img src="{{asset:fotos/06-nave-mercado-libre-aerea.webp}}" alt="Nave Mercado Libre"><figcaption><span class="l-es">Nave Mercado Libre</span><span class="l-en">Mercado Libre warehouse</span></figcaption></figure>
+      </div>
+      <button class="gprev" type="button" aria-label="Anterior"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+      <button class="gnext" type="button" aria-label="Siguiente"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+      <div class="gdots"></div>
+    </div>
+
+    <div class="gal" data-gal="videos" hidden>
+      <div class="gtrack">
+        <figure class="gslide gvid"><video muted loop playsinline preload="none" poster="{{asset:videos/01-vuelo-aereo-parque-poster.webp}}" data-src="{{asset:videos/01-vuelo-aereo-parque.mp4}}"></video><figcaption><span class="l-es">Recorrido aéreo</span><span class="l-en">Aerial flyover</span></figcaption></figure>
+        <figure class="gslide gvid"><video muted loop playsinline preload="none" poster="{{asset:videos/02-acceso-avenida-poster.webp}}" data-src="{{asset:videos/02-acceso-avenida.mp4}}"></video><figcaption><span class="l-es">Avenida de acceso</span><span class="l-en">Access avenue</span></figcaption></figure>
+        <figure class="gslide gvid"><video muted loop playsinline preload="none" poster="{{asset:videos/03-nave-logistica-poster.webp}}" data-src="{{asset:videos/03-nave-logistica.mp4}}"></video><figcaption><span class="l-es">Nave logística</span><span class="l-en">Logistics warehouse</span></figcaption></figure>
+        <figure class="gslide gvid"><video muted loop playsinline preload="none" poster="{{asset:videos/04-calle-interna-poster.webp}}" data-src="{{asset:videos/04-calle-interna.mp4}}"></video><figcaption><span class="l-es">Calle interna</span><span class="l-en">Internal street</span></figcaption></figure>
+      </div>
+      <button class="gprev" type="button" aria-label="Anterior"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+      <button class="gnext" type="button" aria-label="Siguiente"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+      <div class="gdots"></div>
+    </div>
+    <p class="fine"><span class="l-es">Imágenes, videos y renders son representaciones artísticas.</span><span class="l-en">Images, videos and renders are artistic representations.</span></p>
+  </div>
+</section>
+
+<!-- ============================ BROCHURE ============================ -->
+<section class="bro" id="brochure">
+  <div class="wrap bro-in">
+    <div class="bro-cover rv"><img src="{{asset:fotos/05-portal-de-acceso.webp}}" alt="" aria-hidden="true"><img class="bro-logo" src="{{asset:logos/pim-logo-blanco.png}}" alt="" aria-hidden="true"></div>
+    <div class="bro-copy rv">
+      <p class="eyebrow eyebrow-d"><span class="l-es">Brochure general</span><span class="l-en">General brochure</span></p>
+      <h2 class="h-sec h-sec-d"><span class="l-es">Todo el proyecto en un documento</span><span class="l-en">The whole project in one document</span></h2>
+      <p class="lead-d"><span class="l-es">Propuesta de valor, localización, masterplan, infraestructura y partners. PDF · 15 páginas.</span><span class="l-en">Value proposition, location, masterplan, infrastructure and partners. PDF · 15 pages (Spanish).</span></p>
+      <a class="btn btn-solid" href="{{brochure_url}}" target="_blank" rel="noopener" download>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 19h16"/></svg>
+        <span class="l-es">Descargar brochure</span><span class="l-en">Download brochure</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ CONTACTO ============================ -->
+<section class="sec sec-cream" id="contacto">
+  <svg class="estela estela-sec" viewBox="0 0 600 340" aria-hidden="true"><polygon points="0,340 560,40 600,40 230,340" fill="#4F4C4A" opacity=".16"/><polygon points="250,340 600,30 600,120 360,340" fill="#F28A2D" opacity=".26"/></svg>
+  <div class="wrap ct">
+    <div class="ct-copy">
+      <p class="eyebrow"><span class="l-es">Contacto</span><span class="l-en">Contact</span></p>
+      <h2 class="h-sec rv"><span class="l-es">Sumate a PIM</span><span class="l-en">Join PIM</span></h2>
+      <p class="lead rv" data-perfil="inversor"><span class="l-es">Conocé las oportunidades de inversión del parque. Un asesor comercial te contacta con la información completa.</span><span class="l-en">Learn about the park’s investment opportunities. A sales advisor will contact you with full information.</span></p>
+      <p class="lead rv" data-perfil="empresa" hidden><span class="l-es">¿Tu empresa provee a la minería? Contanos qué necesitás —lote, nave o servicios— y armamos la propuesta.</span><span class="l-en">Does your company supply the mining industry? Tell us what you need —plot, warehouse or services— and we’ll prepare a proposal.</span></p>
+      <a class="wa rv" id="waLink" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.4-.3Z"/></svg>
+        +54 9 341 316-5100
+      </a>
+    </div>
+
+    <form class="form rv" id="form" novalidate>
+      <div class="sw-role" role="radiogroup" aria-label="Perfil">
+        <input type="radio" name="perfil" id="pInv" value="inversor" checked>
+        <label for="pInv"><span class="l-es">Soy inversor</span><span class="l-en">I’m an investor</span></label>
+        <input type="radio" name="perfil" id="pEmp" value="empresa">
+        <label for="pEmp"><span class="l-es">Soy empresa</span><span class="l-en">I’m a company</span></label>
+        <i class="sw-knob" aria-hidden="true"></i>
+      </div>
+
+      <div class="fgrid">
+        <label class="fld"><span><span class="l-es">Nombre</span><span class="l-en">First name</span> *</span><input name="nombre" required autocomplete="given-name"></label>
+        <label class="fld"><span><span class="l-es">Apellido</span><span class="l-en">Last name</span> *</span><input name="apellido" required autocomplete="family-name"></label>
+        <label class="fld"><span>Email *</span><input name="email" type="email" required autocomplete="email"></label>
+        <label class="fld"><span><span class="l-es">Teléfono</span><span class="l-en">Phone</span> *</span><input name="telefono" type="tel" required autocomplete="tel"></label>
+
+        <!-- inversor -->
+        <label class="fld fld-w" data-perfil="inversor"><span><span class="l-es">¿Qué te interesa?</span><span class="l-en">What are you interested in?</span></span>
+          <select name="interes">
+            <option value="lote" data-es="Lote industrial" data-en="Industrial plot">Lote industrial</option>
+            <option value="nave" data-es="Nave / módulo logístico" data-en="Warehouse / logistics module">Nave / módulo logístico</option>
+            <option value="renta" data-es="Inversión para renta" data-en="Income investment">Inversión para renta</option>
+            <option value="info" data-es="Información general" data-en="General information">Información general</option>
+          </select>
+        </label>
+
+        <!-- empresa -->
+        <label class="fld" data-perfil="empresa" hidden><span><span class="l-es">Empresa</span><span class="l-en">Company</span> *</span><input name="empresa" autocomplete="organization" data-req="empresa"></label>
+        <label class="fld" data-perfil="empresa" hidden><span><span class="l-es">Rubro</span><span class="l-en">Sector</span></span>
+          <select name="rubro">
+            <option value="proveedor-minero" data-es="Proveedor minero" data-en="Mining supplier">Proveedor minero</option>
+            <option value="logistica" data-es="Logística y transporte" data-en="Logistics and transport">Logística y transporte</option>
+            <option value="mantenimiento" data-es="Mantenimiento" data-en="Maintenance">Mantenimiento</option>
+            <option value="insumos" data-es="Insumos" data-en="Supplies">Insumos</option>
+            <option value="servicios" data-es="Servicios técnicos" data-en="Technical services">Servicios técnicos</option>
+            <option value="otro" data-es="Otro" data-en="Other">Otro</option>
+          </select>
+        </label>
+        <label class="fld" data-perfil="empresa" hidden><span><span class="l-es">Necesidad</span><span class="l-en">Need</span></span>
+          <select name="necesidad">
+            <option value="lote" data-es="Lote para construir" data-en="Plot to build on">Lote para construir</option>
+            <option value="nave" data-es="Nave / depósito" data-en="Warehouse / storage">Nave / depósito</option>
+            <option value="oficina" data-es="Oficinas / base operativa" data-en="Offices / operating base">Oficinas / base operativa</option>
+            <option value="evaluando" data-es="Estoy evaluando" data-en="Still evaluating">Estoy evaluando</option>
+          </select>
+        </label>
+        <label class="fld" data-perfil="empresa" hidden><span><span class="l-es">Superficie estimada (m²)</span><span class="l-en">Estimated area (m²)</span></span><input name="superficie" inputmode="numeric"></label>
+
+        <label class="fld fld-w"><span><span class="l-es">Mensaje</span><span class="l-en">Message</span></span><textarea name="mensaje" rows="3"></textarea></label>
+      </div>
+      <label class="chk"><input type="checkbox" name="acepto" required><span><span class="l-es">Acepto ser contactado por ZLT con información del proyecto.</span><span class="l-en">I agree to be contacted by ZLT with project information.</span></span></label>
+      <input type="text" name="web" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button class="btn btn-solid btn-send" type="submit"><span class="l-es">Enviar consulta</span><span class="l-en">Send inquiry</span></button>
+      <p class="form-msg" id="formMsg" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+</main>
+
+<!-- ============================ FOOTER ============================ -->
+<footer class="foot">
+  <div class="wrap foot-in">
+    <div class="foot-brand">
+      <img src="{{asset:logos/pim-logo-blanco.png}}" alt="PIM · Parque Industrial Minero" width="170" height="61">
+      <p class="foot-addr"><span class="l-es">RN20 · San Juan, Argentina</span><span class="l-en">RN20 · San Juan, Argentina</span></p>
+    </div>
+    <div class="foot-dev">
+      <span class="cred-l"><span class="l-es">Desarrolla</span><span class="l-en">Developer</span></span>
+      <img src="{{asset:logos/zlt-logo-naranja.png}}" alt="ZLT" width="104" height="47">
+      <div class="soc">
+        <a id="sYt" href="#" target="_blank" rel="noopener" aria-label="YouTube somoszlt"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12 31 31 0 0 0 1 16.8a3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8ZM9.7 15V9l5.8 3-5.8 3Z"/></svg></a>
+        <a id="sIg" href="#" target="_blank" rel="noopener" aria-label="Instagram somos.zlt"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm0 8.2a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4ZM17.3 5.5a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4ZM21.9 7c-.1-1.6-.4-3-1.6-4.2S17.6 1.2 16 1.1C14.3 1 9.7 1 8 1.1 6.4 1.2 5 1.5 3.8 2.7S2.2 5.4 2.1 7C2 8.7 2 13.3 2.1 15c.1 1.6.4 3 1.6 4.2s2.6 1.5 4.2 1.6c1.7.1 6.3.1 8 0 1.6-.1 3-.4 4.2-1.6s1.5-2.6 1.6-4.2c.1-1.7.1-6.3 0-8Zm-2.2 10.4a3.2 3.2 0 0 1-1.8 1.8c-1.3.5-4.3.4-5.9.4s-4.6.1-5.9-.4a3.2 3.2 0 0 1-1.8-1.8c-.5-1.3-.4-4.3-.4-5.9s-.1-4.6.4-5.9a3.2 3.2 0 0 1 1.8-1.8C7.4 3.3 10.4 3.4 12 3.4s4.6-.1 5.9.4a3.2 3.2 0 0 1 1.8 1.8c.5 1.3.4 4.3.4 5.9s.1 4.6-.4 5.9Z"/></svg></a>
+        <a id="sLi" href="#" target="_blank" rel="noopener" aria-label="LinkedIn somoszlt"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.4 2H3.6A1.6 1.6 0 0 0 2 3.6v16.8A1.6 1.6 0 0 0 3.6 22h16.8a1.6 1.6 0 0 0 1.6-1.6V3.6A1.6 1.6 0 0 0 20.4 2ZM8 19H5V9.5h3V19ZM6.5 8.2a1.7 1.7 0 1 1 0-3.5 1.7 1.7 0 0 1 0 3.5ZM19 19h-3v-4.6c0-1.1 0-2.5-1.5-2.5S12.7 13 12.7 14.3V19h-3V9.5h2.8v1.3a3.1 3.1 0 0 1 2.8-1.5c3 0 3.6 2 3.6 4.6V19Z"/></svg></a>
+      </div>
+    </div>
+  </div>
+  <div class="wrap">
+    <p class="legal">
+      <span class="l-es">La información, imágenes, planos y equipamiento presentados en este sitio son ilustrativos y no constituyen oferta contractual. Todas las especificaciones, medidas y descripciones pueden ser modificadas sin previo aviso. Las imágenes, videos y renders son representaciones artísticas, y el mobiliario y decoración mostrados son referenciales. El propietario se reserva el derecho de cambiar cualquier aspecto del proyecto sin asumir responsabilidades.</span>
+      <span class="l-en">The information, images, plans and equipment shown on this site are illustrative and do not constitute a contractual offer. All specifications, measurements and descriptions may change without notice. Images, videos and renders are artistic representations, and furniture and decoration shown are for reference only. The owner reserves the right to change any aspect of the project without liability.</span>
+    </p>
+    <p class="copy">© <span id="yr"></span> PIM · Parque Industrial Minero · ZLT</p>
+  </div>
+</footer>
+
+<!-- modal de video -->
+<div class="vmodal" id="vmodal" hidden>
+  <button class="vclose" type="button" aria-label="Cerrar"><i></i><i></i></button>
+  <video id="vmodalV" controls playsinline></video>
+</div>
+
+<script>
+{{asset-js:vendor/leaflet.js}}
+</script>
+<script>
+{{include:src/data.js}}
+</script>
+<script>
+{{include:src/app.js}}
+</script>
+</body>
+</html>

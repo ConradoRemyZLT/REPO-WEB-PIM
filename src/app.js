@@ -1,0 +1,325 @@
+/* =====================================================================
+   PIM · Parque Industrial Minero — comportamiento
+   ===================================================================== */
+(function () {
+  'use strict';
+  var D = window.PIM_DATA || {}, C = D.config || {};
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var html = document.documentElement;
+  var lang = 'es';
+  function t(o) { return o ? (o[lang] || o.es || '') : ''; }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function bi(es, en) { return '<span class="l-es">' + es + '</span><span class="l-en">' + en + '</span>'; }
+
+  /* ---------- idioma ---------- */
+  function setLang(l) {
+    lang = l === 'en' ? 'en' : 'es';
+    html.lang = lang;
+    html.classList.remove('lang-es', 'lang-en');
+    html.classList.add('lang-' + lang);
+    $$('.lang button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.lang === lang)); });
+    $$('option[data-es]').forEach(function (o) { o.textContent = o.dataset[lang]; });
+    try { localStorage.setItem('pim-lang', lang); } catch (e) {}
+    if (window.__pimMapLabels) window.__pimMapLabels();
+  }
+  var q = (location.search.match(/[?&]lang=(es|en)/) || [])[1];
+  var stored = null; try { stored = localStorage.getItem('pim-lang'); } catch (e) {}
+  setLang(q || stored || 'es');
+  $$('.lang button').forEach(function (b) { b.addEventListener('click', function () { setLang(b.dataset.lang); }); });
+
+  /* ---------- barra / menú ---------- */
+  var bar = $('#bar'), burger = $('#burger');
+  function onScroll() { bar.classList.toggle('solid', window.scrollY > window.innerHeight * 0.6 - 64); }
+  window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+  burger.addEventListener('click', function () {
+    var o = document.body.classList.toggle('menu'); burger.setAttribute('aria-expanded', String(o));
+  });
+  $$('#nav a').forEach(function (a) { a.addEventListener('click', function () { document.body.classList.remove('menu'); burger.setAttribute('aria-expanded', 'false'); }); });
+  // sección activa
+  var links = $$('#nav a[href^="#"]');
+  if ('IntersectionObserver' in window) {
+    var so = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) links.forEach(function (a) { a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id); }); });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    links.forEach(function (a) { var s = $(a.getAttribute('href')); if (s) so.observe(s); });
+  }
+
+  /* ---------- reveal ---------- */
+  var rvs = $$('.rv');
+  if ('IntersectionObserver' in window) {
+    var ro = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); ro.unobserve(e.target); } }); }, { rootMargin: '0px 0px -8% 0px' });
+    rvs.forEach(function (el) { ro.observe(el); });
+  } else rvs.forEach(function (el) { el.classList.add('in'); });
+
+  /* ---------- links de config ---------- */
+  var P = C.parque || { lat: -31.5788, lng: -68.4318 };
+  $('#verUbicacion').href = 'https://www.google.com/maps/search/?api=1&query=' + P.lat + ',' + P.lng;
+  var wa = 'https://wa.me/' + (C.whatsapp || '');
+  $('#waLink').href = wa;
+  var S = C.social || {};
+  $('#sYt').href = S.youtube || '#'; $('#sIg').href = S.instagram || '#'; $('#sLi').href = S.linkedin || '#';
+  $('#yr').textContent = new Date().getFullYear();
+
+  /* ---------- estados ---------- */
+  var EST = {
+    'proyecto':    { c: 'tag-opp',  es: 'En proyecto', en: 'In design' },
+    'en-obra':     { c: 'tag-adv',  es: 'En obra', en: 'Under construction' },
+    'terminado':   { c: 'tag-done', es: 'Terminado', en: 'Completed' },
+    'a-definir':   { c: 'tag-pend', es: 'A definir', en: 'To be defined' },
+    'a-confirmar': { c: 'tag-pend', es: 'Estado a confirmar', en: 'Status to be confirmed' }
+  };
+  function tag(k) { var e = EST[k] || EST['a-confirmar']; return '<span class="tag ' + e.c + '">' + bi(e.es, e.en) + '</span>'; }
+
+  /* ---------- obra ---------- */
+  var O = D.obra || {}, oGrid = $('#oGrid');
+  (O.etapas || []).forEach(function (e) {
+    var el = document.createElement('article'); el.className = 'o-card';
+    var h = tag(e.estado) + '<h3>' + bi(esc(e.nombre.es), esc(e.nombre.en)) + '</h3><p>' + bi(esc(e.texto.es), esc(e.texto.en)) + '</p>';
+    if (typeof e.avance === 'number') {
+      var p = Math.max(0, Math.min(100, e.avance));
+      h += '<div class="o-pct">' + p + '%</div><div class="o-bar" role="progressbar" aria-valuenow="' + p + '" aria-valuemin="0" aria-valuemax="100"><i style="--p:' + (p / 100) + '"></i></div>';
+    }
+    if (e.hitos && e.hitos.length) {
+      h += '<ul class="o-hitos">' + e.hitos.map(function (x) { return '<li class="' + (x.ok ? 'ok' : '') + '">' + bi(esc(x.es), esc(x.en || x.es)) + '</li>'; }).join('') + '</ul>';
+    }
+    if (e.video) h += '<a class="btn btn-ghost-d btn-sm" href="' + esc(e.video) + '" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>' + bi('Avance de obra', 'Construction progress') + '</a>';
+    el.innerHTML = h; oGrid.appendChild(el);
+  });
+  if (O.actualizado) $('#obraUpd').innerHTML = bi('Actualizado: ' + esc(O.actualizado), 'Updated: ' + esc(O.actualizado));
+  // estado general en la ficha: el de la Etapa 1
+  var e1 = (O.etapas || [])[0];
+  $('#estadoGeneral').innerHTML = e1 ? tag(e1.estado).replace('Estado a confirmar', 'Etapa 1 · estado a confirmar').replace('Status to be confirmed', 'Phase 1 · status to be confirmed') : '';
+  if ('IntersectionObserver' in window) {
+    var oo = new IntersectionObserver(function (es) { es.forEach(function (x) { if (x.isIntersecting) { x.target.classList.add('in'); oo.unobserve(x.target); } }); }, { threshold: .3 });
+    $$('.o-card').forEach(function (c) { oo.observe(c); });
+  } else $$('.o-card').forEach(function (c) { c.classList.add('in'); });
+
+  /* ---------- unidades ---------- */
+  var U = (D.tipologias || []).filter(function (u) { return u && u.publicar; }), uGrid = $('#uGrid');
+  var TIPO = { lote: ['Lote', 'Plot'], nave: ['Nave', 'Warehouse'], modulo: ['Módulo', 'Module'], servicios: ['Servicios', 'Services'] };
+  var UEST = { disponible: ['tag-func', 'Disponible', 'Available'], reservado: ['tag-adv', 'Reservado', 'Reserved'], vendido: ['tag-pend', 'Vendido', 'Sold'], proximamente: ['tag-opp', 'Próximamente', 'Coming soon'] };
+  function renderU(f) {
+    if (!U.length) {
+      uGrid.innerHTML = '<div class="u-empty"><div><span class="tag tag-orange">' + bi('En preparación', 'Coming soon') + '</span>' +
+        '<h3 style="margin-top:16px">' + bi('Tipologías y disponibilidad', 'Typologies and availability') + '</h3>' +
+        '<p>' + bi('Estamos cerrando el detalle de lotes y naves de cada etapa. Dejanos tus datos y te enviamos superficies, disponibilidad y condiciones apenas estén publicadas.', 'We are finalizing the plots and warehouses for each phase. Leave your details and we’ll send you sizes, availability and terms as soon as they are released.') + '</p>' +
+        '<a class="btn btn-solid" href="#contacto">' + bi('Recibir disponibilidad', 'Get availability') + '</a></div>' +
+        '<ul class="u-kinds"><li><b>' + bi('Lotes industriales', 'Industrial plots') + '</b><span>' + bi('Etapas 1 y 2', 'Phases 1 and 2') + '</span></li>' +
+        '<li><b>' + bi('Naves logísticas', 'Logistics warehouses') + '</b><span>' + bi('Con andenes de carga', 'With loading docks') + '</span></li>' +
+        '<li><b>' + bi('Áreas de servicios', 'Service areas') + '</b><span>' + bi('A definir*', 'To be defined*') + '</span></li>' +
+        '<li><b>' + bi('Operador ancla', 'Anchor operator') + '</b><span>Mercado Libre · 4.370 m²</span></li></ul></div>';
+      return;
+    }
+    uGrid.innerHTML = U.filter(function (u) { return !f || String(u.etapa) === f; }).map(function (u) {
+      var ty = TIPO[u.tipo] || ['', ''], st = UEST[u.estado] || UEST.disponible;
+      var spec = '';
+      if (u.superficie) spec += '<div><dt>' + bi('Superficie', 'Area') + '</dt><dd>' + esc(u.superficie) + '</dd></div>';
+      if (u.frente) spec += '<div><dt>' + bi('Frente', 'Frontage') + '</dt><dd>' + esc(u.frente) + '</dd></div>';
+      if (u.unidades != null) spec += '<div><dt>' + bi('Unidades', 'Units') + '</dt><dd>' + esc(u.unidades) + '</dd></div>';
+      if (u.disponibles != null) spec += '<div><dt>' + bi('Disponibles', 'Available') + '</dt><dd>' + esc(u.disponibles) + '</dd></div>';
+      return '<article class="u-card"><div class="u-top"><span class="u-type">' + bi(ty[0], ty[1]) + ' · ' + bi('Etapa ', 'Phase ') + esc(u.etapa) + '</span><span class="tag ' + st[0] + '">' + bi(st[1], st[2]) + '</span></div>' +
+        '<h3 class="u-name">' + bi(esc(u.nombre.es), esc(u.nombre.en || u.nombre.es)) + '</h3>' +
+        (spec ? '<dl class="u-spec">' + spec + '</dl>' : '') +
+        (u.detalle ? '<p class="u-det">' + bi(esc(u.detalle.es), esc(u.detalle.en || u.detalle.es)) + '</p>' : '') +
+        '<a class="btn btn-ghost btn-sm" href="#contacto" data-unidad="' + esc(u.id) + '">' + bi('Consultar', 'Inquire') + '</a></article>';
+    }).join('');
+  }
+  renderU('');
+  var etapas = U.map(function (u) { return String(u.etapa); }).filter(function (v, i, a) { return a.indexOf(v) === i; });
+  if (etapas.length > 1) {
+    var uf = $('#uFilter'); uf.hidden = false;
+    uf.innerHTML = '<button class="on" data-f="">' + bi('Todas', 'All') + '</button>' + etapas.map(function (e) { return '<button data-f="' + e + '">' + bi('Etapa ' + e, 'Phase ' + e) + '</button>'; }).join('');
+    uf.addEventListener('click', function (ev) { var b = ev.target.closest('button'); if (!b) return; $$('button', uf).forEach(function (x) { x.classList.toggle('on', x === b); }); renderU(b.dataset.f); });
+  }
+  uGrid.addEventListener('click', function (ev) {
+    var a = ev.target.closest('[data-unidad]'); if (!a) return;
+    var m = $('#form [name=mensaje]'); m.value = (lang === 'en' ? 'Interested in unit ' : 'Me interesa la unidad ') + a.dataset.unidad + '. ';
+  });
+
+  /* ---------- masterplan ---------- */
+  var mp = $('.mp');
+  function hl(z) {
+    mp.classList.toggle('hl', !!z);
+    $$('.zn', mp).forEach(function (p) { p.classList.toggle('on', p.dataset.z === z); });
+    $$('#mpList li').forEach(function (li) { li.classList.toggle('on', li.dataset.z === z); });
+  }
+  $$('.zn, #mpList li').forEach(function (el) {
+    el.addEventListener('mouseenter', function () { hl(el.dataset.z); });
+    el.addEventListener('mouseleave', function () { hl(null); });
+    el.addEventListener('focus', function () { hl(el.dataset.z); });
+    el.addEventListener('blur', function () { hl(null); });
+    el.addEventListener('click', function () { hl(el.classList.contains('on') && mp.classList.contains('hl') ? null : el.dataset.z); });
+  });
+
+  /* ---------- galerías ---------- */
+  function gallery(g) {
+    var tr = $('.gtrack', g), sl = $$('.gslide', g), dots = $('.gdots', g), i = 0;
+    dots.innerHTML = sl.map(function (_, k) { return '<button type="button" aria-label="' + (k + 1) + '"></button>'; }).join('');
+    var db = $$('button', dots);
+    function go(n) {
+      i = (n + sl.length) % sl.length;
+      tr.style.transform = 'translateX(' + (-100 * i) + '%)';
+      db.forEach(function (b, k) { b.classList.toggle('on', k === i); });
+      sl.forEach(function (s, k) {
+        var v = $('video', s); if (!v) return;
+        if (k === i && !g.hidden) { if (!v.src && v.dataset.src) v.src = v.dataset.src; var pr = v.play(); if (pr && pr.catch) pr.catch(function () {}); }
+        else v.pause();
+      });
+    }
+    $('.gnext', g).addEventListener('click', function () { go(i + 1); });
+    $('.gprev', g).addEventListener('click', function () { go(i - 1); });
+    db.forEach(function (b, k) { b.addEventListener('click', function () { go(k); }); });
+    var x0 = null;
+    g.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+    g.addEventListener('touchend', function (e) { if (x0 == null) return; var dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 40) go(i + (dx < 0 ? 1 : -1)); x0 = null; });
+    g.__go = function () { go(i); };
+    go(0);
+  }
+  var gals = $$('.gal'); gals.forEach(gallery);
+  $$('.g-tabs button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      $$('.g-tabs button').forEach(function (x) { x.classList.toggle('on', x === b); x.setAttribute('aria-selected', String(x === b)); });
+      gals.forEach(function (g) { g.hidden = g.dataset.gal !== b.dataset.g; if (!g.hidden) g.__go(); else $$('video', g).forEach(function (v) { v.pause(); }); });
+    });
+  });
+
+  /* ---------- modal video ---------- */
+  var vm = $('#vmodal'), vv = $('#vmodalV');
+  var vids = $$('.gal[data-gal=videos] video');
+  $$('[data-open-video]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var src = vids[+b.dataset.openVideo]; if (!src) return;
+      vv.src = src.dataset.src; vm.hidden = false; document.body.style.overflow = 'hidden';
+      var pr = vv.play(); if (pr && pr.catch) pr.catch(function () {});
+    });
+  });
+  function closeV() { vv.pause(); vv.removeAttribute('src'); vv.load(); vm.hidden = true; document.body.style.overflow = ''; }
+  $('.vclose', vm).addEventListener('click', closeV);
+  vm.addEventListener('click', function (e) { if (e.target === vm) closeV(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !vm.hidden) closeV(); });
+
+  /* ---------- parallax suave ---------- */
+  var rbg = $('.regional-bg'), reg = $('#regional');
+  if (rbg && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    window.addEventListener('scroll', function () {
+      var r = reg.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) return;
+      rbg.style.transform = 'translateY(' + ((r.top + r.height / 2 - innerHeight / 2) * -0.08) + 'px)';
+    }, { passive: true });
+  }
+
+  /* ---------- formulario ---------- */
+  var form = $('#form'), msg = $('#formMsg');
+  function perfil() { return (form.querySelector('[name=perfil]:checked') || {}).value || 'inversor'; }
+  function syncPerfil() {
+    var p = perfil();
+    $$('[data-perfil]').forEach(function (el) { el.hidden = el.dataset.perfil !== p; });
+  }
+  $$('[name=perfil]', form).forEach(function (r) { r.addEventListener('change', syncPerfil); });
+  syncPerfil();
+  form.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    if (form.web.value) return; // honeypot
+    var p = perfil(), ok = true;
+    $$('.fld, .chk', form).forEach(function (f) { f.classList.remove('err'); });
+    $$('input, select, textarea', form).forEach(function (el) {
+      var box = el.closest('.fld') || el.closest('.chk');
+      if (box && box.hidden) return;
+      var req = el.required || el.dataset.req === p;
+      var bad = req && (el.type === 'checkbox' ? !el.checked : !String(el.value).trim());
+      if (!bad && el.type === 'email' && el.value) bad = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value);
+      if (bad && box) { box.classList.add('err'); ok = false; }
+    });
+    if (!ok) { msg.className = 'form-msg bad'; msg.innerHTML = bi('Revisá los campos marcados.', 'Please check the highlighted fields.'); return; }
+    var data = { perfil: p, idioma: lang, origen: 'web-pim', fecha: new Date().toISOString() };
+    $$('input, select, textarea', form).forEach(function (el) {
+      var box = el.closest('.fld'); if (!el.name || el.name === 'web' || el.name === 'perfil' || (box && box.hidden)) return;
+      data[el.name] = el.type === 'checkbox' ? el.checked : el.value.trim();
+    });
+    var done = function () { msg.className = 'form-msg ok'; msg.innerHTML = bi('¡Gracias! Un asesor te va a contactar a la brevedad.', 'Thank you! An advisor will contact you shortly.'); form.reset(); syncPerfil(); };
+    if (C.formEndpoint) {
+      var btn = $('.btn-send', form); btn.disabled = true;
+      fetch(C.formEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
+        .then(function (r) { if (!r.ok) throw 0; done(); })
+        .catch(function () { msg.className = 'form-msg bad'; msg.innerHTML = bi('No pudimos enviar la consulta. Escribinos por WhatsApp.', 'We couldn’t send your inquiry. Please message us on WhatsApp.'); })
+        .then(function () { btn.disabled = false; });
+      return;
+    }
+    // sin endpoint configurado: WhatsApp con el mensaje armado
+    var L = p === 'empresa' ? 'Empresa' : 'Inversor';
+    var txt = 'Hola, quiero información sobre PIM · Parque Industrial Minero.\nPerfil: ' + L +
+      '\nNombre: ' + data.nombre + ' ' + data.apellido + '\nEmail: ' + data.email + '\nTeléfono: ' + data.telefono +
+      (p === 'empresa' ? '\nEmpresa: ' + data.empresa + '\nRubro: ' + data.rubro + '\nNecesidad: ' + data.necesidad + (data.superficie ? '\nSuperficie: ' + data.superficie + ' m²' : '') : '\nInterés: ' + data.interes) +
+      (data.mensaje ? '\nMensaje: ' + data.mensaje : '');
+    window.open(wa + '?text=' + encodeURIComponent(txt), '_blank', 'noopener');
+    done();
+  });
+
+  /* ---------- mapa ---------- */
+  function initMap() {
+    if (!window.L || !$('#map')) return;
+    var map = L.map('map', { zoomControl: false, scrollWheelZoom: false, attributionControl: true });
+    L.control.zoom({ position: 'topright' }).addTo(map);
+    // Mapas gratuitos (datos abiertos, con atribución):
+    //  - OpenTopoMap (CC-BY-SA): relieve, ideal para la vista regional cordillerana
+    //  - OpenStreetMap (ODbL): calles, para el entorno del parque
+    var ATTR_OSM = '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
+    var topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', { maxZoom: 17, subdomains: 'abc', attribution: ATTR_OSM + ' · © <a href="https://opentopomap.org">OpenTopoMap</a> (CC-BY-SA)' });
+    var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: ATTR_OSM });
+    var fails = 0; topo.on('tileerror', function () { if (++fails === 6 && map.hasLayer(topo)) { map.removeLayer(topo); osm.addTo(map); } });
+    map.attributionControl.setPrefix(false);
+    function icon(cls, label, opts) {
+      opts = opts || {};
+      var s = opts.size || 14;
+      return L.divIcon({ className: '', iconSize: [s, s], iconAnchor: [s / 2, s / 2],
+        html: '<div class="mk ' + cls + '"></div>' + (label ? '<span class="mk-lbl ' + (opts.lc || '') + '" data-es="' + esc(label.es || label) + '" data-en="' + esc(label.en || label.es || label) + '">' + esc(label[lang] || label.es || label) + '</span>' : '') });
+    }
+    var pim = [P.lat, P.lng];
+    var SJ = [-31.5375, -68.5364], AIR = [-31.5715, -68.4182];
+    var bases = [
+      ['San José de Jáchal', -30.2410, -68.7460], ['Rodeo', -30.2120, -69.1380], ['Iglesia', -30.4110, -69.2100],
+      ['Calingasta', -31.3330, -69.4250], ['Barreal', -31.6400, -69.4720], ['Cañada Honda', -31.9830, -68.5480]
+    ];
+    var minas = [['Veladero', -29.3700, -69.9500], ['Vicuña · Josemaría / Filo del Sol', -28.4500, -69.6000], ['Los Azules', -31.0650, -70.2200], ['El Pachón', -31.7500, -70.4300]];
+    var links = [
+      [SJ, [-30.2410, -68.7460], [-30.2120, -69.1380], [-29.3700, -69.9500]],
+      [[-30.2120, -69.1380], [-29.3, -69.5], [-28.4500, -69.6000]],
+      [SJ, [-31.3330, -69.4250], [-31.0650, -70.2200]],
+      [[-31.3330, -69.4250], [-31.6400, -69.4720], [-31.7500, -70.4300]],
+      [SJ, [-31.9830, -68.5480]]
+    ];
+    var gReg = L.layerGroup(), gEnt = L.layerGroup();
+    links.forEach(function (l) { L.polyline(l, { color: '#F28A2D', weight: 2, dashArray: '6 7', opacity: .9 }).addTo(gReg); });
+    bases.forEach(function (b, k) { L.marker([b[1], b[2]], { icon: icon('mk-base', b[0], { size: 12, lc: (b[0] === 'Iglesia' || b[0] === 'Rodeo') ? 'lft' : '' }) }).addTo(gReg); });
+    minas.forEach(function (m) { L.marker([m[1], m[2]], { icon: icon('mk-mina', m[0], { size: 11, lc: 'or' }) }).addTo(gReg); });
+    L.marker(SJ, { icon: icon('mk-city', { es: 'San Juan · centro logístico', en: 'San Juan · logistics hub' }, { size: 16, lc: 'lft' }) }).addTo(gReg);
+    L.marker(pim, { icon: icon('mk-pim', 'PIM', { size: 22, lc: 'or' }), zIndexOffset: 1000 }).addTo(gReg);
+    // entorno
+    L.marker(SJ, { icon: icon('mk-city', { es: 'Ciudad de San Juan', en: 'San Juan city' }, { size: 16 }) }).addTo(gEnt);
+    L.marker(AIR, { icon: icon('mk-air', { es: 'Aeropuerto de San Juan', en: 'San Juan Airport' }, { size: 14 }) }).addTo(gEnt);
+    L.marker(pim, { icon: icon('mk-pim', { es: 'PIM · Parque Industrial Minero', en: 'PIM · Mining Industrial Park' }, { size: 22, lc: 'or' }), zIndexOffset: 1000 }).addTo(gEnt);
+    L.polyline([SJ, [-31.555, -68.48], pim], { color: '#F28A2D', weight: 3, dashArray: '8 8' }).addTo(gEnt);
+    var views = {
+      region: { g: gReg, b: L.latLngBounds([[-28.3, -70.6], [-32.15, -68.3]]) },
+      entorno: { g: gEnt, b: L.latLngBounds([SJ, AIR, pim]).pad(0.35) }
+    };
+    var cur = null;
+    function show(v) {
+      if (cur) map.removeLayer(views[cur].g);
+      var base = v === 'region' && fails < 6 ? topo : osm;
+      [topo, osm].forEach(function (l) { if (l !== base && map.hasLayer(l)) map.removeLayer(l); });
+      if (!map.hasLayer(base)) base.addTo(map);
+      cur = v; views[v].g.addTo(map); map.fitBounds(views[v].b, { padding: [20, 20] });
+      if (window.__pimMapLabels) window.__pimMapLabels();
+      $$('.map-tabs button').forEach(function (b) { var on = b.dataset.view === v; b.classList.toggle('on', on); b.setAttribute('aria-selected', String(on)); });
+    }
+    $$('.map-tabs button').forEach(function (b) { b.addEventListener('click', function () { show(b.dataset.view); }); });
+    show('region');
+    map.on('click', function () { map.scrollWheelZoom.enable(); });
+    window.__pimMapLabels = function () { $$('.mk-lbl[data-es]').forEach(function (s) { s.textContent = s.dataset[lang]; }); };
+    window.__pimMap = map;
+    var mo = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { map.invalidateSize(); map.fitBounds(views[cur].b, { padding: [20, 20] }); mo.disconnect(); } });
+    mo.observe($('#map'));
+  }
+  initMap();
+})();
