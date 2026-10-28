@@ -9,6 +9,8 @@ Solo usa la librería estándar de Python 3.
     python build.py            -> index.html (raíz, para GitHub Pages)
                                   html/PIM-WEB.html (copia de entrega)
     python build.py --index    -> permite indexación (por defecto noindex)
+    python build.py --sin-login -> sin pantalla de login (por defecto lleva gate.js,
+                                  copia exacta del de ZLT-WEB-V2: mismos usuarios)
 
 Marcadores soportados en src/:
     {{include:ruta}}      inserta el archivo como texto (se procesa recursivo)
@@ -73,6 +75,14 @@ def render(text, ctx, depth=0):
 def main():
     robots = 'index,follow' if '--index' in sys.argv else 'noindex,nofollow'
     src = read('src/index.html')
+    # Login: gate.js (copia exacta del de ZLT-WEB-V2) inline después de </title>,
+    # antes de que se pinte nada. No modificarlo: si cambian los usuarios, copiarlo de nuevo.
+    login = '--sin-login' not in sys.argv
+    if login:
+        if not os.path.isfile(os.path.join(ROOT, 'gate.js')):
+            sys.exit('ERROR: falta gate.js (login). Copiarlo de ZLT-WEB-V2 o usar --sin-login')
+        gate = read('gate.js').replace('</script', '<\\/script')
+        src = src.replace('</title>', '</title>\n<script>' + gate + '</script>', 1)
     outs = [('index.html', BROCHURE), ('html/PIM-WEB.html', '../' + BROCHURE)]
     for out, bro in outs:
         html = render(src, {'brochure_url': bro, 'robots': robots})
@@ -85,7 +95,7 @@ def main():
             f.write(html)
         mb = os.path.getsize(p) / 1048576
         print(f'OK  {out}  {mb:.1f} MB' + ('  <-- SUPERA EL LIMITE DE SUBIDA' if mb > LIMIT_MB else ''))
-    print(f'robots: {robots}')
+    print(f'robots: {robots}  ·  login: {"sí (gate.js)" if login else "NO"}')
 
 
 if __name__ == '__main__':

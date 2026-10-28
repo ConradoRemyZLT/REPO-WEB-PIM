@@ -9,6 +9,7 @@ El sitio se edita en `src/` y se **compila a un único HTML autocontenido** (fot
 ```
 python build.py          # genera index.html (raíz) y html/PIM-WEB.html
 python build.py --index  # idem, pero indexable por Google (por defecto: noindex)
+python build.py --sin-login  # sin pantalla de login
 ```
 
 Para verlo en local: abrir `index.html` en el navegador.
@@ -41,8 +42,10 @@ Para verlo en local: abrir `index.html` en el navegador.
 
 ## Notas
 
+- **Login:** el HTML lleva `gate.js`, copia exacta del de ZLT-WEB-V2 (mismos usuarios y claves que proyectos.somoszlt.com, Nodo, Lumina y PIVM). No modificarlo; si cambian los usuarios, copiarlo de nuevo desde ZLT-WEB-V2. Es un control client-side: frena a quien entra por la URL, no a quien mire el repo.
+
 - Gilroy se declara pero no se embebe (licencia); Urbanist es el sustituto visual.
-- Mapa: gratuito y abierto — OpenTopoMap (relieve, vista regional) y OpenStreetMap (entorno del parque), con su atribución. Sin claves ni costos; uso razonable según sus políticas.
+- Mapa: gratuito. Vista regional = mapa vectorial propio sin teselas (`mapas/mapa-base.js`, provincias y rutas de Natural Earth, dominio público), solo con los puntos clave. Entorno del parque = OpenStreetMap en gris (con atribución).
 - PIM todavía no tiene web oficial (dominios propuestos: parqueindustrialminero.com / pimsanjuan.com).
 - Videos a 24 fps (frecuencia nativa de las animaciones de Kling).
 - Límite de subida: 30 MB. El build avisa si se supera.

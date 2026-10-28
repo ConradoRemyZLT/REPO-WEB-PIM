@@ -255,61 +255,74 @@
     done();
   });
 
-  /* ---------- mapa ---------- */
+  /* ---------- mapa ----------
+     Vista regional: mapa vectorial propio, sin teselas (Natural Earth, dominio
+     público: provincias y rutas principales) — limpio, solo puntos clave.
+     Entorno del parque: OpenStreetMap en gris, para que resalten los puntos. */
   function initMap() {
     if (!window.L || !$('#map')) return;
-    var map = L.map('map', { zoomControl: false, scrollWheelZoom: false, attributionControl: true });
+    var BASE = window.PIM_MAPA_BASE || null;
+    var map = L.map('map', { zoomControl: false, scrollWheelZoom: false, attributionControl: true, zoomSnap: 0.25 });
     L.control.zoom({ position: 'topright' }).addTo(map);
-    // Mapas gratuitos (datos abiertos, con atribución):
-    //  - OpenTopoMap (CC-BY-SA): relieve, ideal para la vista regional cordillerana
-    //  - OpenStreetMap (ODbL): calles, para el entorno del parque
-    var ATTR_OSM = '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
-    var topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', { maxZoom: 17, subdomains: 'abc', attribution: ATTR_OSM + ' · © <a href="https://opentopomap.org">OpenTopoMap</a> (CC-BY-SA)' });
-    var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: ATTR_OSM });
-    var fails = 0; topo.on('tileerror', function () { if (++fails === 6 && map.hasLayer(topo)) { map.removeLayer(topo); osm.addTo(map); } });
     map.attributionControl.setPrefix(false);
-    function icon(cls, label, opts) {
-      opts = opts || {};
-      var s = opts.size || 14;
-      return L.divIcon({ className: '', iconSize: [s, s], iconAnchor: [s / 2, s / 2],
-        html: '<div class="mk ' + cls + '"></div>' + (label ? '<span class="mk-lbl ' + (opts.lc || '') + '" data-es="' + esc(label.es || label) + '" data-en="' + esc(label.en || label.es || label) + '">' + esc(label[lang] || label.es || label) + '</span>' : '') });
+    var box = $('#map');
+
+    // capa regional (vectorial)
+    var gBase = L.layerGroup();
+    if (BASE) {
+      L.geoJSON(BASE.prov, { interactive: false, style: function (f) {
+        var sj = f.properties.n === 'San Juan', cl = f.properties.c === 'CHL';
+        return { color: sj ? '#F28A2D' : '#ffffff', weight: sj ? 1.6 : 1, fillColor: sj ? '#FCE6D2' : (cl ? '#E9E6E0' : '#F6F3ED'), fillOpacity: 1 };
+      } }).addTo(gBase);
+      L.geoJSON(BASE.roads, { interactive: false, style: { color: '#CFC8BD', weight: 1, opacity: .9 } }).addTo(gBase);
     }
-    var pim = [P.lat, P.lng];
-    var SJ = [-31.5375, -68.5364], AIR = [-31.5715, -68.4182];
-    var bases = [
-      ['San José de Jáchal', -30.2410, -68.7460], ['Rodeo', -30.2120, -69.1380], ['Iglesia', -30.4110, -69.2100],
-      ['Calingasta', -31.3330, -69.4250], ['Barreal', -31.6400, -69.4720], ['Cañada Honda', -31.9830, -68.5480]
-    ];
-    var minas = [['Veladero', -29.3700, -69.9500], ['Vicuña · Josemaría / Filo del Sol', -28.4500, -69.6000], ['Los Azules', -31.0650, -70.2200], ['El Pachón', -31.7500, -70.4300]];
-    var links = [
-      [SJ, [-30.2410, -68.7460], [-30.2120, -69.1380], [-29.3700, -69.9500]],
-      [[-30.2120, -69.1380], [-29.3, -69.5], [-28.4500, -69.6000]],
-      [SJ, [-31.3330, -69.4250], [-31.0650, -70.2200]],
-      [[-31.3330, -69.4250], [-31.6400, -69.4720], [-31.7500, -70.4300]],
-      [SJ, [-31.9830, -68.5480]]
-    ];
+    var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, className: 'tiles-gris',
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' });
+
+    function lbl(o) { return typeof o === 'string' ? { es: o, en: o } : o; }
+    function icon(cls, label, dir, size) {
+      var L2 = label ? lbl(label) : null;
+      return L.divIcon({ className: '', iconSize: [size, size], iconAnchor: [size / 2, size / 2],
+        html: '<div class="mk ' + cls + '"></div>' + (L2 ? '<span class="mk-lbl ' + cls + '-l ' + (dir || 'r') + '" data-es="' + esc(L2.es) + '" data-en="' + esc(L2.en) + '">' + esc(L2[lang]) + '</span>' : '') });
+    }
+    function mk(g, ll, cls, label, dir, size, z) { L.marker(ll, { icon: icon(cls, label, dir, size), interactive: false, keyboard: false, zIndexOffset: z || 0 }).addTo(g); }
+
+    var pim = [P.lat, P.lng], SJ = [-31.5375, -68.5364], AIR = [-31.5715, -68.4182];
     var gReg = L.layerGroup(), gEnt = L.layerGroup();
-    links.forEach(function (l) { L.polyline(l, { color: '#F28A2D', weight: 2, dashArray: '6 7', opacity: .9 }).addTo(gReg); });
-    bases.forEach(function (b, k) { L.marker([b[1], b[2]], { icon: icon('mk-base', b[0], { size: 12, lc: (b[0] === 'Iglesia' || b[0] === 'Rodeo') ? 'lft' : '' }) }).addTo(gReg); });
-    minas.forEach(function (m) { L.marker([m[1], m[2]], { icon: icon('mk-mina', m[0], { size: 11, lc: 'or' }) }).addTo(gReg); });
-    L.marker(SJ, { icon: icon('mk-city', { es: 'San Juan · centro logístico', en: 'San Juan · logistics hub' }, { size: 16, lc: 'lft' }) }).addTo(gReg);
-    L.marker(pim, { icon: icon('mk-pim', 'PIM', { size: 22, lc: 'or' }), zIndexOffset: 1000 }).addTo(gReg);
+    // vínculos logísticos referenciales (no son caminos)
+    [[SJ, [-30.241, -68.746], [-30.212, -69.138], [-29.37, -69.95]],
+     [[-30.212, -69.138], [-28.45, -69.6]],
+     [SJ, [-31.333, -69.425], [-31.065, -70.22]],
+     [[-31.333, -69.425], [-31.64, -69.472], [-31.75, -70.43]],
+     [SJ, [-31.983, -68.548]]].forEach(function (l) {
+      L.polyline(l, { color: '#F28A2D', weight: 1.6, dashArray: '5 6', opacity: .85, interactive: false }).addTo(gReg);
+    });
+    // bases de servicios (posición de etiqueta elegida para no superponer)
+    [['San José de Jáchal', -30.241, -68.746, 'r'], ['Rodeo', -30.212, -69.138, 'l'], ['Iglesia', -30.411, -69.21, 'l'],
+     ['Calingasta', -31.333, -69.425, 't'], ['Barreal', -31.64, -69.472, 'b'], ['Cañada Honda', -31.983, -68.548, 'r']]
+      .forEach(function (b) { mk(gReg, [b[1], b[2]], 'mk-base', b[0], b[3], 10); });
+    // proyectos mineros
+    [['Vicuña', -28.45, -69.6, 'r'], ['Veladero', -29.37, -69.95, 'r'], ['Los Azules', -31.065, -70.22, 'l'], ['El Pachón', -31.75, -70.43, 'l']]
+      .forEach(function (m) { mk(gReg, [m[1], m[2]], 'mk-mina', m[0], m[3], 11); });
+    mk(gReg, SJ, 'mk-city', 'San Juan', 'l', 12, 500);
+    mk(gReg, pim, 'mk-pim', 'PIM', 'r', 18, 1000);
     // entorno
-    L.marker(SJ, { icon: icon('mk-city', { es: 'Ciudad de San Juan', en: 'San Juan city' }, { size: 16 }) }).addTo(gEnt);
-    L.marker(AIR, { icon: icon('mk-air', { es: 'Aeropuerto de San Juan', en: 'San Juan Airport' }, { size: 14 }) }).addTo(gEnt);
-    L.marker(pim, { icon: icon('mk-pim', { es: 'PIM · Parque Industrial Minero', en: 'PIM · Mining Industrial Park' }, { size: 22, lc: 'or' }), zIndexOffset: 1000 }).addTo(gEnt);
-    L.polyline([SJ, [-31.555, -68.48], pim], { color: '#F28A2D', weight: 3, dashArray: '8 8' }).addTo(gEnt);
+    mk(gEnt, SJ, 'mk-city', { es: 'Ciudad de San Juan', en: 'San Juan city' }, 't', 14);
+    mk(gEnt, AIR, 'mk-air', { es: 'Aeropuerto', en: 'Airport' }, 'r', 12);
+    mk(gEnt, pim, 'mk-pim', 'PIM', 'b', 20, 1000);
+    L.polyline([SJ, [-31.555, -68.48], pim], { color: '#F28A2D', weight: 2.5, dashArray: '7 7', interactive: false }).addTo(gEnt);
+
     var views = {
-      region: { g: gReg, b: L.latLngBounds([[-28.3, -70.6], [-32.15, -68.3]]) },
-      entorno: { g: gEnt, b: L.latLngBounds([SJ, AIR, pim]).pad(0.35) }
+      region: { b: L.latLngBounds([[-28.25, -70.75], [-32.15, -67.9]]) },
+      entorno: { b: L.latLngBounds([SJ, AIR, pim]).pad(0.45) }
     };
-    var cur = null;
+    var cur = null, FIT = { paddingTopLeft: [16, 64], paddingBottomRight: [16, 16] };
     function show(v) {
-      if (cur) map.removeLayer(views[cur].g);
-      var base = v === 'region' && fails < 6 ? topo : osm;
-      [topo, osm].forEach(function (l) { if (l !== base && map.hasLayer(l)) map.removeLayer(l); });
-      if (!map.hasLayer(base)) base.addTo(map);
-      cur = v; views[v].g.addTo(map); map.fitBounds(views[v].b, { padding: [20, 20] });
+      [gBase, gReg, gEnt, osm].forEach(function (l) { if (map.hasLayer(l)) map.removeLayer(l); });
+      if (v === 'region') { gBase.addTo(map); gReg.addTo(map); map.attributionControl.addAttribution('Natural Earth'); }
+      else { map.attributionControl.removeAttribution('Natural Earth'); osm.addTo(map); gEnt.addTo(map); }
+      box.classList.toggle('map-reg', v === 'region');
+      cur = v; map.fitBounds(views[v].b, FIT);
       if (window.__pimMapLabels) window.__pimMapLabels();
       $$('.map-tabs button').forEach(function (b) { var on = b.dataset.view === v; b.classList.toggle('on', on); b.setAttribute('aria-selected', String(on)); });
     }
@@ -318,8 +331,8 @@
     map.on('click', function () { map.scrollWheelZoom.enable(); });
     window.__pimMapLabels = function () { $$('.mk-lbl[data-es]').forEach(function (s) { s.textContent = s.dataset[lang]; }); };
     window.__pimMap = map;
-    var mo = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { map.invalidateSize(); map.fitBounds(views[cur].b, { padding: [20, 20] }); mo.disconnect(); } });
-    mo.observe($('#map'));
+    var mo = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { map.invalidateSize(); map.fitBounds(views[cur].b, FIT); mo.disconnect(); } });
+    mo.observe(box);
   }
   initMap();
 })();

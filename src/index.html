@@ -52,12 +52,11 @@
 <section class="hero" id="inicio">
   <video class="hero-v" autoplay muted loop playsinline preload="auto" poster="{{asset:videos/01-vuelo-aereo-parque-poster.webp}}" src="{{asset:videos/01-vuelo-aereo-parque.mp4}}" aria-hidden="true"></video>
   <div class="hero-shade" aria-hidden="true"></div>
-  <svg class="estela estela-hero" viewBox="0 0 600 340" aria-hidden="true"><polygon points="0,340 560,40 600,40 230,340" fill="#4F4C4A" opacity=".9"/><polygon points="250,340 600,30 600,120 360,340" fill="#F28A2D"/></svg>
   <div class="wrap hero-in">
     <p class="eyebrow eyebrow-d rv"><span class="l-es">San Juan · Argentina · RN20</span><span class="l-en">San Juan · Argentina · National Route 20</span></p>
-    <h1 class="hero-t rv">
-      <span class="l-es">La plataforma industrial y logística de la <em>minería</em> sanjuanina</span>
-      <span class="l-en">The industrial and logistics platform for San Juan’s <em>mining</em> industry</span>
+    <h1 class="hero-logo rv">
+      <img src="{{asset:logos/pim-logo-blanco.png}}" alt="PIM · Parque Industrial Minero" width="953" height="340">
+      <span class="sr-only"><span class="l-es">PIM · Parque Industrial Minero — la plataforma industrial y logística de la minería sanjuanina</span><span class="l-en">PIM · Mining Industrial Park — the industrial and logistics platform for San Juan’s mining industry</span></span>
     </h1>
     <p class="hero-s rv">
       <span class="l-es">Un parque concebido para consolidar a los proveedores del sector en un mismo predio: junto al Aeropuerto de San Juan, con acceso directo a la Ruta Nacional N°20 y a unas 2 horas de Calingasta y Rodeo.</span>
@@ -83,8 +82,8 @@
 </section>
 
 <!-- ============================ PROYECTO (ficha) ============================ -->
-<section class="sec sec-light" id="proyecto">
-  <svg class="estela estela-sec" viewBox="0 0 600 340" aria-hidden="true"><polygon points="0,340 560,40 600,40 230,340" fill="#4F4C4A" opacity=".18"/><polygon points="250,340 600,30 600,120 360,340" fill="#F28A2D" opacity=".28"/></svg>
+<section class="sec sec-light has-estela" id="proyecto">
+  <img class="estela estela-sec" src="{{asset:logos/pim-isotipo-estela.png}}" alt="" aria-hidden="true" width="1756" height="730">
   <div class="wrap">
     <div class="phead-top">
       <p class="eyebrow"><span class="l-es">Minería · Logística · Industria</span><span class="l-en">Mining · Logistics · Industry</span></p>
@@ -172,6 +171,7 @@
         <div id="map" class="map" aria-label="Mapa de ubicación de PIM"></div>
         <div class="map-legend">
           <span><i class="lg lg-pim"></i>PIM</span>
+          <span><i class="lg lg-city"></i>San Juan</span>
           <span><i class="lg lg-base"></i><span class="l-es">Base de servicios</span><span class="l-en">Service base</span></span>
           <span><i class="lg lg-mina"></i><span class="l-es">Proyecto minero</span><span class="l-en">Mining project</span></span>
           <span><i class="lg lg-link"></i><span class="l-es">Vínculo logístico*</span><span class="l-en">Logistics link*</span></span>
@@ -244,9 +244,11 @@
             <polygon class="zn zn-e2" data-z="e2" points="226,359 341,322 552,387 442,431 586,596 511,609 320,391 269,409"/>
             <polygon class="zn zn-e1" data-z="e1" points="442,431 552,387 662,421 730,484 689,501 759,570 667,584 586,596"/>
             <polygon class="zn zn-ml" data-z="ml" points="689,501 730,484 818,562 759,570"/>
-            <polygon class="zn zn-sv" data-z="sv" points="321,326 531,390 529,397 319,333"/>
-            <polygon class="zn zn-sv" data-z="sv" points="572,576 745,551 754,569 583,594"/>
+            <polygon class="zn zn-sv" data-z="sv" points="341.0,324.1 549.0,388.2 528.4,396.5 317.8,331.6"/>
+            <polygon class="zn zn-sv" data-z="sv" points="585.6,595.6 758.1,569.1 745.7,556.9 574.7,583.1"/>
             <polyline points="226,359 341,322 552,387 662,421 818,562 667,584 511,609 320,391 269,409 226,359" fill="none" stroke="#F4F1EA" stroke-width="5" stroke-linejoin="round"/>
+            <text class="mp-sv" x="433" y="363" transform="rotate(17.1 433 363)" text-anchor="middle"><tspan class="l-es">ÁREA DE SERVICIOS*</tspan><tspan class="l-en">SERVICE AREA*</tspan></text>
+            <text class="mp-sv" x="666" y="579" transform="rotate(-8.7 666 579)" text-anchor="middle"><tspan class="l-es">ÁREA DE SERVICIOS*</tspan><tspan class="l-en">SERVICE AREA*</tspan></text>
             <text class="mp-lab" x="335" y="378"><tspan class="l-es">ETAPA 2</tspan><tspan class="l-en">PHASE 2</tspan></text>
             <text class="mp-lab" x="575" y="478"><tspan class="l-es">ETAPA 1</tspan><tspan class="l-en">PHASE 1</tspan></text>
           </g>
@@ -265,8 +267,8 @@
 </section>
 
 <!-- ============================ MERCADO LIBRE ============================ -->
-<section class="sec sec-cream" id="mercadolibre">
-  <svg class="estela estela-sec" viewBox="0 0 600 340" aria-hidden="true"><polygon points="0,340 560,40 600,40 230,340" fill="#4F4C4A" opacity=".16"/><polygon points="250,340 600,30 600,120 360,340" fill="#F28A2D" opacity=".26"/></svg>
+<section class="sec sec-cream has-estela" id="mercadolibre">
+  <img class="estela estela-sec" src="{{asset:logos/pim-isotipo-estela.png}}" alt="" aria-hidden="true" width="1756" height="730">
   <div class="wrap">
     <div class="ml">
       <div class="ml-copy">
@@ -420,8 +422,8 @@
 </section>
 
 <!-- ============================ CONTACTO ============================ -->
-<section class="sec sec-cream" id="contacto">
-  <svg class="estela estela-sec" viewBox="0 0 600 340" aria-hidden="true"><polygon points="0,340 560,40 600,40 230,340" fill="#4F4C4A" opacity=".16"/><polygon points="250,340 600,30 600,120 360,340" fill="#F28A2D" opacity=".26"/></svg>
+<section class="sec sec-cream has-estela" id="contacto">
+  <img class="estela estela-sec" src="{{asset:logos/pim-isotipo-estela.png}}" alt="" aria-hidden="true" width="1756" height="730">
   <div class="wrap ct">
     <div class="ct-copy">
       <p class="eyebrow"><span class="l-es">Contacto</span><span class="l-en">Contact</span></p>
@@ -501,7 +503,7 @@
     </div>
     <div class="foot-dev">
       <span class="cred-l"><span class="l-es">Desarrolla</span><span class="l-en">Developer</span></span>
-      <img src="{{asset:logos/zlt-logo-naranja.png}}" alt="ZLT" width="104" height="47">
+      <img src="{{asset:logos/zlt-logo-blanco.png}}" alt="ZLT" width="104" height="47">
       <div class="soc">
         <a id="sYt" href="#" target="_blank" rel="noopener" aria-label="YouTube somoszlt"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12 31 31 0 0 0 1 16.8a3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8ZM9.7 15V9l5.8 3-5.8 3Z"/></svg></a>
         <a id="sIg" href="#" target="_blank" rel="noopener" aria-label="Instagram somos.zlt"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm0 8.2a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4ZM17.3 5.5a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4ZM21.9 7c-.1-1.6-.4-3-1.6-4.2S17.6 1.2 16 1.1C14.3 1 9.7 1 8 1.1 6.4 1.2 5 1.5 3.8 2.7S2.2 5.4 2.1 7C2 8.7 2 13.3 2.1 15c.1 1.6.4 3 1.6 4.2s2.6 1.5 4.2 1.6c1.7.1 6.3.1 8 0 1.6-.1 3-.4 4.2-1.6s1.5-2.6 1.6-4.2c.1-1.7.1-6.3 0-8Zm-2.2 10.4a3.2 3.2 0 0 1-1.8 1.8c-1.3.5-4.3.4-5.9.4s-4.6.1-5.9-.4a3.2 3.2 0 0 1-1.8-1.8c-.5-1.3-.4-4.3-.4-5.9s-.1-4.6.4-5.9a3.2 3.2 0 0 1 1.8-1.8C7.4 3.3 10.4 3.4 12 3.4s4.6-.1 5.9.4a3.2 3.2 0 0 1 1.8 1.8c.5 1.3.4 4.3.4 5.9s.1 4.6-.4 5.9Z"/></svg></a>
@@ -529,6 +531,9 @@
 </script>
 <script>
 {{include:src/data.js}}
+</script>
+<script>
+{{include:mapas/mapa-base.js}}
 </script>
 <script>
 {{include:src/app.js}}
