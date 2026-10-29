@@ -82,7 +82,7 @@ def main():
         if not os.path.isfile(os.path.join(ROOT, 'gate.js')):
             sys.exit('ERROR: falta gate.js (login). Copiarlo de ZLT-WEB-V2 o usar --sin-login')
         gate = read('gate.js').replace('</script', '<\\/script')
-        src = src.replace('</title>', '</title>\n<script>' + gate + '</script>', 1)
+        src = src.replace('</title>', '</title>\n<script>window.__PIM_GATE=1;' + gate + '</script>', 1)
     outs = [('index.html', BROCHURE), ('html/PIM-WEB.html', '../' + BROCHURE)]
     for out, bro in outs:
         html = render(src, {'brochure_url': bro, 'robots': robots})

@@ -8,6 +8,56 @@
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var html = document.documentElement;
   var lang = 'es';
+
+  /* ══════════ Pantalla de carga ══════════
+     Mismo criterio que las otras webs de ZLT (Nodo, Álamos): se queda hasta que TODAS
+     las imágenes están decodificadas, las fuentes listas y el video del hero puede
+     reproducirse sin cortes. La barra muestra el avance real. Tope de seguridad: 90 s.
+     Con login (gate.js): mientras el login está en pantalla no termina la carga; al
+     ingresar se ve la pantalla de carga hasta que todo esté listo. */
+  var GATE = new Promise(function (r) {
+    function ok() { try { return sessionStorage.getItem('zlt_gate_ok') === '1'; } catch (e) { return true; } }
+    if (!window.__PIM_GATE || ok()) return r();
+    (function chk() { if (ok() && !document.getElementById('zgate')) r(); else setTimeout(chk, 150); })();
+  });
+  (function () {
+    var pre = document.getElementById('pre'); if (!pre) return;
+    var bar = pre.querySelector('.pbar i'), done = false, total = 0, okN = 0;
+    document.documentElement.classList.add('loading');
+    function paint() { if (bar) bar.style.width = (total ? Math.max(4, Math.round(okN / total * 100)) : 4) + '%'; }
+    function track(p) { total++; paint(); return Promise.resolve(p).catch(function () {}).then(function () { okN++; paint(); }); }
+    function cap(p, ms) { return Promise.race([p, new Promise(function (r) { setTimeout(r, ms); })]); }
+    function imgReady(im) {
+      if (!im.getAttribute('src')) return Promise.resolve();
+      var p = (im.complete && im.naturalWidth) ? Promise.resolve()
+        : new Promise(function (r) { im.addEventListener('load', r, { once: true }); im.addEventListener('error', r, { once: true }); });
+      return p.then(function () { return im.decode ? im.decode().catch(function () {}) : null; });
+    }
+    function vidReady(v) {
+      if (v.readyState >= 4 || v.error || !v.canPlayType('video/mp4; codecs="avc1.640028"')) return Promise.resolve();   // sin H.264 no se espera
+      return new Promise(function (r) { v.addEventListener('canplaythrough', r, { once: true }); v.addEventListener('error', r, { once: true }); });
+    }
+    function finish() {
+      if (done) return; done = true; okN = total; paint();
+      setTimeout(function () {
+        document.body.classList.add('ready'); document.documentElement.classList.remove('loading');
+        var hv = document.querySelector('.hero-v'); if (hv) { try { hv.currentTime = 0; var pr = hv.play(); if (pr && pr.catch) pr.catch(function () {}); } catch (e) {} }
+        if (window.__pimMap) { try { window.__pimMap.invalidateSize(); } catch (e) {} }
+      }, 300);
+    }
+    setTimeout(function () {
+      var all = [];
+      Array.prototype.forEach.call(document.querySelectorAll('img'), function (im) { if (im.closest('#pre') || im.closest('#zgate')) return; im.loading = 'eager'; all.push(track(cap(imgReady(im), 30000))); });
+      Array.prototype.forEach.call(document.querySelectorAll('image'), function (im) {   // imagen del masterplan (SVG)
+        var href = im.getAttribute('href') || im.getAttribute('xlink:href'); if (!href) return;
+        var i2 = new Image(); i2.src = href; all.push(track(cap(i2.decode ? i2.decode().catch(function () {}) : Promise.resolve(), 30000)));
+      });
+      var hv = document.querySelector('.hero-v'); if (hv) all.push(track(cap(vidReady(hv), 45000)));
+      if (document.fonts && document.fonts.ready) all.push(track(cap(document.fonts.ready, 15000)));
+      all.push(track(new Promise(function (r) { if (document.readyState === 'complete') r(); else addEventListener('load', r, { once: true }); })));
+      GATE.then(function () { setTimeout(finish, 90000); return Promise.all(all); }).then(finish);
+    }, 0);
+  })();
   function t(o) { return o ? (o[lang] || o.es || '') : ''; }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function bi(es, en) { return '<span class="l-es">' + es + '</span><span class="l-en">' + en + '</span>'; }
